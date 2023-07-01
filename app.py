@@ -44,7 +44,8 @@ def format_book(book_info: List[str]) -> str:
 
 st.title("Cavendish Labs Library AI Assistant")
 if st.button("Recommend a random book"):
-    with open('books.csv', 'r') as f:
+    with open('books.csv', 'r', encoding="cp1252") as f:
+        print(f)
         reader = csv.reader(f)
         books = list(reader)[1:]  # ignore header
         random_book = random.choice(books)
