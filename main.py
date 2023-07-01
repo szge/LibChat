@@ -4,11 +4,11 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+import csv
 
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
 
-# The ID and range of a sample spreadsheet.
 SAMPLE_SPREADSHEET_ID = '1JFyivbZzcRjRE-ImCZBT-D9IILZ7JEL9aUyII8GE5q4'
 SAMPLE_RANGE_NAME = "Books"
 
@@ -37,15 +37,13 @@ def save_to_csv():
             print('No data found.')
             return
 
-        headers = values.pop(0)
-        for row in values:
-            print(row)
-
         # save to csv file
-        with open('books.csv', 'w') as f:
-            f.write(','.join(headers) + '\n')
-            for row in values:
-                f.write(','.join(row) + '\n')
+        with open('books.csv', 'w', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerows(values)
+
+        # there might be multiple comma separated authors in a cell.
+
     except HttpError as err:
         print(err)
 
